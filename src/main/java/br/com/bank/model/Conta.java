@@ -17,4 +17,12 @@ public class Conta {
 	public String getCpf() {
 		return cpf;
 	}
+	
+	public void depositar(Double deposito) {
+		saldo += deposito;
+	}
+	
+	public void sacar(Double saque) {
+		saldo -= saque;
+	}
 }

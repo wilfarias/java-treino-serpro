@@ -25,7 +25,9 @@ class HelloControllerTest {
     @Test
     public void deve_dizer_ola_mundo() {
 
-        web.get().uri("/api/ola").accept(MediaType.ALL).exchange().expectStatus().isOk().expectBody(String.class)
+        web.get().uri("/api/ola").accept(MediaType.ALL)
+        .exchange().expectStatus().isOk()
+        .expectBody(String.class)
                 .value(c -> assertEquals("Olá Mundo!", c));
     }
 

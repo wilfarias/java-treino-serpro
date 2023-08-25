@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class CaminhoArquivoTest {
 
-    @Test
-    @Disabled
+	//@Disabled
+    @Test    
     public void deve_montar_caminho_para_arquivo() {
 
         CaminhoArquivo caminhoArquivo = CaminhoArquivo.getInstance(1);
@@ -37,7 +38,13 @@ class CaminhoArquivoTest {
         caminhoArquivo = CaminhoArquivo.getInstance(2001);
         assertEquals(Paths.get("/tmp/3"), caminhoArquivo.getDiretorio());
         assertEquals(Paths.get("/tmp/3/2001"), caminhoArquivo.getArquivo());
-
+    }
+    
+    @Test
+    public void deve_retornar_vazio_quando_id_nao_for_definido() {    	
+        assertThrows(NullPointerException.class, () -> {
+        	CaminhoArquivo caminhoArquivo = CaminhoArquivo.getInstance(null);
+        });
     }
 
 }

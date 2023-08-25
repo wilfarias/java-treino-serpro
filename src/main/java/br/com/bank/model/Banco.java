@@ -1,7 +1,6 @@
 package br.com.bank.model;
 
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -9,32 +8,34 @@ import java.util.stream.Collectors;
 
 public class Banco {
 
-    private String nome;
+	private static final Double saldoMinimoContaAltaRenda = 100000.0;
+	
+	private String nome;
 
-    public Banco(String nome) {
-        this.nome = nome;
-    }
+	public Banco(String nome) {
+		this.nome = nome;
+	}
 
-    private List<Conta> contas = new ArrayList<>();
+	private HashMap<String,Conta> contas = new HashMap<>();
 
-    public void adicionarConta(Conta conta) {
-        contas.add(conta);
-    }
-    public Conta pesquisarContaDoCliente(String cpf) {
-        Conta c = null;
-        for (int i = 0; i < contas.size(); i++) {
-            if (contas.get(i).getCpf().equals(cpf)) {
-                c = contas.get(i);
-            }
-        }
-        return c;
-    }
+	public void adicionarConta(Conta conta) {
+		contas.put(conta.getCpf(), conta);
+	}
 
-    public List<Conta> listarContasAltaRenda() {
-        return filtrarContas(c -> c.getSaldo() >= 10000);
-    }
+	public Optional<Conta> pesquisarContaDoCliente(String cpf) {		
+		Optional<Conta> conta = Optional.ofNullable(contas.get(cpf));		
+		return conta;
+	}
 
-    private List<Conta> filtrarContas(Predicate<Conta> filtro) {
-        return contas.stream().filter(filtro).collect(Collectors.toList());
-    }
+	public List<Conta> listarContasAltaRenda() {
+		return filtrarContas(conta -> conta.getSaldo() >= saldoMinimoContaAltaRenda);
+	}
+
+	private List<Conta> filtrarContas(Predicate<Conta> filtro) {
+		return contas.values().stream().filter(filtro).collect(Collectors.toList());
+	}
+	
+	public int getTotalContas() {
+		return contas.size();
+	}
 }
